@@ -57,6 +57,7 @@ public struct NavigationSearchBarActionKey: Hashable, Equatable, RawRepresentabl
     public static let onCancelButtonClicked = NavigationSearchBarActionKey("onCancelButtonClicked")
     public static let onSearchButtonClicked = NavigationSearchBarActionKey("onSearchButtonClicked")
     public static let onBookmarkButtonClicked = NavigationSearchBarActionKey("onBookmarkButtonClicked")
+    public static let onTextBeganEditing = NavigationSearchBarActionKey("onTextBeganEditing")
 
     public static func == (lhs: NavigationSearchBarActionKey, rhs: NavigationSearchBarActionKey) -> Bool {
         return lhs.rawValue == rhs.rawValue
@@ -202,6 +203,11 @@ fileprivate struct NavigationSearchBar<SearchResultsContent>: UIViewControllerRe
         
         func searchBarBookmarkButtonClicked(_ searchBar: UISearchBar) {
             guard let action = self.representable.actions[.onBookmarkButtonClicked] else { return }
+            DispatchQueue.main.async { action() }
+        }
+        
+        func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+            guard let action = self.representable.actions[.onTextBeganEditing] else { return }
             DispatchQueue.main.async { action() }
         }
         
